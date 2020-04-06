@@ -1,0 +1,25 @@
+FROM node:latest AS builder
+WORKDIR /usr/src/app
+COPY package*.json  ./
+RUN npm i -g @angular/cli
+ENV PATH /usr/src/app/node_modules/.bin:$PATH
+RUN npm i --unsafe-perm
+
+COPY . .
+ARG node_env=production
+ENV NODE_ENV $node_env
+
+ARG project
+RUN ng build $project --prod
+
+FROM nginx:alpine
+
+WORKDIR /dist
+ARG project
+COPY --from=builder /usr/src/app/dist/apps/$project /usr/share/nginx/html
+
+ARG port=80
+ENV PORT $port
+EXPOSE $port
+
+CMD ["nginx", "-g", "daemon off;"]
