@@ -96,6 +96,22 @@ services:
     ports:
       - "1337:1337"
 
+#vault
+
+  vault:
+    image: vault
+    container_name: vault
+    ports:
+      - "8200:8200"
+    restart: always
+    volumes:
+      - ./infra/vault/volumes/logs:/vault/logs
+      - ./infra/vault/volumes/file:/vault/file
+      - ./infra/vault/volumes/config:/vault/config
+    cap_add:
+      - IPC_LOCK
+    entrypoint: vault server -config=/vault/config/vault.json     
+
 #frontend service
   frontend:
         build:

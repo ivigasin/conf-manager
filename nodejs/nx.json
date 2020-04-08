@@ -28,6 +28,12 @@
     },
     "users": {
       "tags": []
+    },
+    "authorize": {
+      "tags": []
+    },
+    "vault": {
+      "tags": []
     }
   }
 }

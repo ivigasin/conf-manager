@@ -178,6 +178,87 @@
           }
         }
       }
+    },
+    "authorize": {
+      "root": "apps/authorize",
+      "sourceRoot": "apps/authorize/src",
+      "projectType": "application",
+      "prefix": "authorize",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@nrwl/node:build",
+          "options": {
+            "outputPath": "dist/apps/authorize",
+            "main": "apps/authorize/src/main.ts",
+            "tsConfig": "apps/authorize/tsconfig.app.json",
+            "assets": ["apps/authorize/src/assets"]
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "extractLicenses": true,
+              "inspect": false,
+              "fileReplacements": [
+                {
+                  "replace": "apps/authorize/src/environments/environment.ts",
+                  "with": "apps/authorize/src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@nrwl/node:execute",
+          "options": {
+            "buildTarget": "authorize:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/authorize/tsconfig.app.json",
+              "apps/authorize/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!apps/authorize/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/authorize/jest.config.js",
+            "tsConfig": "apps/authorize/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
+    },
+    "vault": {
+      "root": "libs/vault",
+      "sourceRoot": "libs/vault/src",
+      "projectType": "library",
+      "schematics": {},
+      "architect": {
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "libs/vault/tsconfig.lib.json",
+              "libs/vault/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**", "!libs/vault/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "libs/vault/jest.config.js",
+            "tsConfig": "libs/vault/tsconfig.spec.json",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {
